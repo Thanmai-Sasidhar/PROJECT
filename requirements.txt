@@ -1,0 +1,6 @@
+google-generativeai 
+ollama 
+numpy 
+pillow 
+opencv-python-headless 
+pytesseract 
