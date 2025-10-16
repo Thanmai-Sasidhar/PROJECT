@@ -6,7 +6,7 @@ import ollama
 from PIL import Image
 from utils import extract_text_from_image, init_session_state
 
-# -------------------- Define Chat Function --------------------
+# -------------------- Chat Function --------------------
 def run_chat():
     # -------------------- Page Config --------------------
     st.set_page_config(
@@ -15,24 +15,26 @@ def run_chat():
         layout="centered"
     )
 
-    # -------------------- Check Login --------------------
+    # -------------------- Initialize Session --------------------
+    init_session_state()
+
+    # -------------------- Login Check --------------------
     if "logged_in" not in st.session_state or not st.session_state.logged_in:
-        st.warning("⚠️ Please login to continue.")
-        st.session_state.page = "login"
-        st.experimental_rerun()
+        if "redirecting" not in st.session_state:
+            st.session_state.redirecting = True
+            st.session_state.page = "login"
+            st.warning("⚠️ Please login to continue.")
+            st.experimental_rerun()
+        else:
+            st.stop()  # Prevent further code execution
 
     # -------------------- API Config --------------------
     api_key = os.getenv("GEMINI_API_KEY")
-    if not api_key:
-        st.error("❌ GEMINI_API_KEY not found in environment variables.")
-    else:
+    if api_key:
         genai.configure(api_key=api_key)
 
     GEMINI_MODEL = "gemini-2.5-flash"
     OLLAMA_MODEL = "llama3.1:8b"
-
-    # -------------------- Initialize Session --------------------
-    init_session_state()
 
     # -------------------- Sidebar --------------------
     with st.sidebar:
@@ -40,6 +42,7 @@ def run_chat():
         if st.button("🚪 Logout", use_container_width=True):
             st.session_state.clear()
             st.session_state.page = "login"
+            st.session_state.redirecting = True
             st.experimental_rerun()
 
         st.markdown("---")
