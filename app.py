@@ -127,7 +127,7 @@ def run_chat():
                     st.rerun()
 
     # -------------------- Chat UI --------------------
-    st.title("💬 Chat with Gemini or Ollama")
+    st.title("💬 Chat with Syntra")
     if st.session_state.current_chat:
         chat = st.session_state.history[st.session_state.current_chat]
 
