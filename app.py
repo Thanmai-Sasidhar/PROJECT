@@ -16,7 +16,7 @@ def run_chat():
 
     # -------------------- Page Config --------------------
     st.set_page_config(
-        page_title="Gemini + Ollama Chat",
+        page_title="Syntra",
         page_icon="🤖",
         layout="centered"
     )
